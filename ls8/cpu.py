@@ -74,8 +74,24 @@ class CPU:
         """ALU operations."""
 
         if op == "ADD":
-            self.reg[reg_a] += self.reg[reg_b]
+            self.registers[reg_a] += self.registers[reg_b]
         # elif op == "SUB": etc
+        elif op == "CMP":
+            if self.registers[reg_a] == self.registers[reg_b]:
+                self.fl = self.fl | 0b00000001
+            else:
+                self.fl = self.fl & 0b11111110
+
+            if self.registers[reg_a] > self.registers[reg_b]:
+                self.fl = self.fl | 0b00000010
+            else:
+                self.fl = self.fl & 0b11111101
+
+            if self.registers[reg_a] < self.registers[reg_b]:
+                self.fl = self.fl | 0b00000100
+            else:
+                self.fl = self.fl & 0b11111011
+
         else:
             raise Exception("Unsupported ALU operation")
 
